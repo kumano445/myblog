@@ -12,7 +12,3 @@ This is my second blog post!
 This is my second blog post!
 This is my second blog post!
 This is my second blog post!
-<<<<<<< HEAD
-=======
-This is my second blog post!
->>>>>>> 038ef23 (third)
