@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ comments: [] }, { status: 200 });
   }
 
-  return NextResponse.json({ comments: comments.get(slug) });
+  return NextResponse.json({ comments: comments.get(slug) }, { status: 200 }); // ステータスコード追加
 }
 
 export async function POST(req: Request) {

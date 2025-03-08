@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import { getPost } from "@/app/lib/getPost";
 
-export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function GET(req: Request, context: { params: { slug: string } }) {
+  const { slug } = context.params;
 
-  console.log("Fetching post for slug:", params.slug);
-  const post = getPost(params.slug);
+  console.log("Fetching post for slug:", slug);
+  const post = await getPost(slug);
+
   console.log("Fetched post:", post);
 
   if (!post) {
