@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { getPost } from "@/app/lib/getPost";
+import { NextRequest } from "next/server"; 
 
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
-  const { slug } = params; 
+export async function GET(req: NextRequest, context: { params: { slug: string } }) {
+  const { slug } = context.params;
 
   console.log("Fetching post for slug:", slug);
   const post = await getPost(slug); 
