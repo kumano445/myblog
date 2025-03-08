@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";  // NextRequest型をインポート
 import { getPost } from "@/app/lib/getPost";
 
-export async function GET(req: Request) {
-  const { slug } = req.params; // reqからslugを取得
+export async function GET(req: NextRequest) {
+  const { slug } = req.params; // paramsはreqから取得
 
   console.log("Fetching post for slug:", slug);
   const post = await getPost(slug); 
