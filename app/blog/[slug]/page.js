@@ -4,9 +4,10 @@ import "./content.css";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Layout from "../../../components/Layout";
+import { use } from "react";
 
 export default function BlogPost({ params }) {
-  const { slug } = params;
+  const { slug } = use(params);
 
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);

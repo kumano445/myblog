@@ -24,15 +24,15 @@ return (
 };
 
 export async function getServerSideProps(ctx) {
-  const query = ctx.query.q || "";
-  const posts = getPosts(); // `lib/posts.ts` の関数を利用
+  const query = (ctx.query.q || "").toLowerCase(); 
+  const posts = getPosts(); 
 
   // FlexSearch インスタンスを作成
   const index = new FlexSearch.Document({
-    tokenize: "full", // 日本語対応のために `full` を使用
+    tokenize: "full", 
     document: {
       id: "slug",
-      index: ["title", "content"], // タイトルと本文の両方を検索対象
+      index: ["title", "content", "tags"],
     },
   });
 
@@ -42,15 +42,19 @@ export async function getServerSideProps(ctx) {
       slug: post.slug,
       title: post.frontmatter.title,
       content: post.excerpt,
+      tags: post.frontmatter.tags ? post.frontmatter.tags.join(" ") : "",
     });
   });
 
   // 検索実行
-  const res = index.search(query, 10); // 最大10件取得
-  const results = res.flat().map((r) => ({
-    slug: r.slug,
-    title: r.title,
-  }));
+  const res = index.search(query, { enrich: true });
+
+  const results = res.flatMap(({ result }) =>
+    result.map((r) => ({
+      slug: r.doc.slug,
+      title: r.doc.title,
+    }))
+  );
 
   return {
     props: { query, results },
