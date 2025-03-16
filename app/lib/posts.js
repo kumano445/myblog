@@ -1,12 +1,12 @@
+// app/lib/posts.js
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkHtml from "remark-html";
-import "./content.css";
 
-export async function getPostData(slug: string) {
+export async function getPostData(slug) {
   const filePath = path.join(process.cwd(), "content", `${slug}.md`);
 
   if (!fs.existsSync(filePath)) {
@@ -23,9 +23,24 @@ export async function getPostData(slug: string) {
 
   return {
     slug,
-    title: data.title,
-    date: data.date,
+    title: data.title || "タイトルなし",
+    date: data.date || "日付不明",
     thumbnail: data.thumbnail || null,
+    tags: data.tags || [], // タグを取得
     contentHtml,
   };
+}
+
+
+// getAllSlugs 関数も定義
+export async function getAllSlugs() {
+  const contentDirectory = path.join(process.cwd(), "content");
+  const filenames = fs.readdirSync(contentDirectory);
+
+  const slugs = filenames.map((filename) => {
+    const slug = filename.replace(/\.md$/, "");
+    return { slug };
+  });
+
+  return slugs;
 }
