@@ -63,6 +63,7 @@ export default async function BlogPostPage({ params }) {
       <PostContent content={post.contentHtml} />
        {/* コメントセクション */}
        <CommentSection />
+       <div className="mt-10 space-y-16 border-gray-200 pt-10 sm:mt-16 sm:pt-16"></div>
     </Layout>
   );
 }
