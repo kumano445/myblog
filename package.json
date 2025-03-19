@@ -10,6 +10,7 @@
     "pagefind:index": "pagefind --source out/"
   },
   "dependencies": {
+    "flexsearch": "^0.8.103",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.7",
     "next": "^15.2.1",

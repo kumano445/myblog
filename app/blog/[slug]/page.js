@@ -8,6 +8,7 @@ import CommentSection from "@/components/CommentSection";
 // これで非同期にパラメーターを取得
 export async function generateStaticParams() {
   const slugs = await getAllSlugs();
+  
   return slugs.map((slug) => ({
     slug: slug.slug,  // 正しいパラメーター名を返す
   }));
