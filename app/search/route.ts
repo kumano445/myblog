@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
-import { Document } from "flexsearch";
+import FlexSearch from "flexsearch";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -15,6 +15,7 @@ export async function GET(req: Request) {
   const postsDirectory = path.join(process.cwd(), "content");
   const fileNames = fs.readdirSync(postsDirectory);
 
+  // 記事データを取得
   const posts = fileNames.map((fileName) => {
     const filePath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(filePath, "utf8");
@@ -22,39 +23,58 @@ export async function GET(req: Request) {
 
     return {
       slug: fileName.replace(".md", ""),
-      frontmatter: data,
-      excerpt: content.replace(/\n/g, " ").trim().slice(0, 100),
+      title: data.title || "無題",
+      tags: Array.isArray(data.tags) ? data.tags.join(" ") : "", // 配列を文字列に変換
+      description: data.description || "",
+      content: content.replace(/\n/g, " ").trim(),
     };
   });
 
-  const index = new Document({
-    tokenize: "forward",
-    document: {
-      id: "slug",
-      index: ["title", "content", "tags"],
-    },
-  } as any); // 型エラーを回避
+  // **FlexSearch のインデックス作成**
+  const index = new FlexSearch.Document<Partial<{
+    id: string;
+    title: string;
+    tags: string;
+    description: string;
+    content: string;
+  }>>({});
 
-  // 記事をインデックスに追加
+  // **記事データをインデックスに追加**
   posts.forEach((post) => {
     index.add({
-      slug: post.slug,
-      title: post.frontmatter.title,
-      content: post.excerpt,
-      tags: post.frontmatter.tags ? post.frontmatter.tags.join(" ") : "",
+      id: post.slug, // `id` を `slug` に対応させる
+      title: post.title,
+      tags: post.tags,
+      description: post.description,
+      content: post.content,
     });
   });
 
-  const searchResults = index.search(query, { enrich: true }) as { result: string[] }[];
-  const searchSlugs = new Set(searchResults.flatMap((res) => res.result));
+  // **検索処理**
+  const searchResults = index.search(query, { enrich: true }) as {
+    field: string;
+    result: { id: string }[];
+  }[];
 
-  const resultsMap = new Map<string, { slug: string; title?: string }>();
-  searchSlugs.forEach((slug) => {
-    const post = posts.find((p) => p.slug === slug);
-    if (post) {
-      resultsMap.set(slug, { slug: post.slug, title: post.frontmatter.title });
-    }
+  if (!searchResults || searchResults.length === 0) {
+    return NextResponse.json({ results: [] }, { status: 200 });
+  }
+
+  // **検索結果の取得**
+  const results: { slug: string; title: string; description: string }[] = [];
+
+  searchResults.forEach((res) => {
+    res.result.forEach((doc) => {
+      const post = posts.find((p) => p.slug.toLowerCase() === doc.id.toLowerCase());
+      if (post) {
+        results.push({
+          slug: post.slug,
+          title: post.title,
+          description: post.description,
+        });
+      }
+    });
   });
 
-  return NextResponse.json({ results: Array.from(resultsMap.values()) }, { status: 200 });
+  return NextResponse.json({ results }, { status: 200 });
 }

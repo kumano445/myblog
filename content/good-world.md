@@ -2,7 +2,7 @@
 title: "Good Bye World"
 date: "2023-11-3"
 thumbnail: "/images/goodbye-world.webp"
-tags: ["good","bye","World"]
+tags: ["good","world"]
 description: "This is my second blog post!"
 ---
 

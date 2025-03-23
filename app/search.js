@@ -46,15 +46,28 @@ export async function getServerSideProps(ctx) {
     });
   });
 
+  function searchPosts(posts, query) {
+    if (!query) return posts; // クエリが空なら全件表示
+  
+    const lowerCaseQuery = query.toLowerCase();
+  
+    return posts.filter(post =>
+      post.title.toLowerCase().includes(lowerCaseQuery) ||
+      post.description.toLowerCase().includes(lowerCaseQuery)
+    );
+  }
+
   // 検索実行
   const res = index.search(query, { enrich: true });
 
-  const results = res.flatMap(({ result }) =>
-    result.map((r) => ({
-      slug: r.doc.slug,
-      title: r.doc.title,
-    }))
+  const results = Array.from(
+    new Map(
+      res.flatMap(({ result }) =>
+        result.map((r) => [r.doc.slug, { slug: r.doc.slug, title: r.doc.title }])
+      )
+    ).values()
   );
+  
 
   return {
     props: { query, results },

@@ -2,7 +2,7 @@
 title: "Hello World"
 date: "2023-011-3"
 thumbnail: "/images/hello.webp"
-tags: ["Hello","WORLD"]
+tags: ["hello","world"]
 description: "This is my first blog post!"
 
 ---

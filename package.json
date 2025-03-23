@@ -10,7 +10,7 @@
     "pagefind:index": "pagefind --source out/"
   },
   "dependencies": {
-    "flexsearch": "^0.8.103",
+    "flexsearch": "^0.8.105",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.7",
     "next": "^15.2.1",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
+    "@types/flexsearch": "^0.7.6",
     "@types/node": "22.13.0",
     "@types/react": "19.0.8",
     "autoprefixer": "^10.0.1",

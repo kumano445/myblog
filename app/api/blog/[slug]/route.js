@@ -1,18 +1,18 @@
-import { NextResponse } from "next/server";
-import { getPost } from "@/lib/getPost";
-
-export async function GET(request, context) {
-  const { params } = context;
-  const { slug } = await params; 
-
-  if (!slug) {
-    return NextResponse.json({ error: "記事が見つかりません" }, { status: 404 });
+export default async function BlogPostPage({ params }) {
+  if (!params || !params.slug) {
+    return <p>記事が見つかりませんでした。</p>;
   }
 
-  const post = await getPost(slug);
+  const post = await getPostData(params.slug);
+
   if (!post) {
-    return NextResponse.json({ error: "記事が見つかりません" }, { status: 404 });
+    return <p>記事が見つかりませんでした。</p>;
   }
 
-  return NextResponse.json(post);
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </article>
+  );
 }
