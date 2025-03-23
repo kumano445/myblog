@@ -1,18 +1,24 @@
-export default async function BlogPostPage({ params }) {
-  if (!params || !params.slug) {
-    return <p>記事が見つかりませんでした。</p>;
-  }
+import { getPostData } from "@/lib/posts";
 
-  const post = await getPostData(params.slug);
+export async function GET(request, { params }) {
+    if (!params || !params.slug) {
+        return new Response(JSON.stringify({ error: "記事が見つかりませんでした。" }), {
+            status: 404,
+            headers: { "Content-Type": "application/json" }
+        });
+    }
 
-  if (!post) {
-    return <p>記事が見つかりませんでした。</p>;
-  }
+    const post = await getPostData(params.slug);
 
-  return (
-    <article>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
-    </article>
-  );
+    if (!post) {
+        return new Response(JSON.stringify({ error: "記事が見つかりませんでした。" }), {
+            status: 404,
+            headers: { "Content-Type": "application/json" }
+        });
+    }
+
+    return new Response(JSON.stringify(post), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+    });
 }
