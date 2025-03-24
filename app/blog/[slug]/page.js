@@ -34,8 +34,8 @@ export default async function Page({ params }) {
                         src={post.thumbnail}
                         alt={post.title}
                         width={800}
-                        height={400}
-                        className="w-full h-64 object-cover rounded-lg"
+                        height={600}
+                        className="w-full h-600 object-cover rounded-lg"
                     />
                 </div>
             )}

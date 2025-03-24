@@ -1,3 +1,4 @@
+
 p {
   @apply mt-6 text-xl leading-8;
 }
@@ -30,3 +31,5 @@ li {
 a {
   @apply text-indigo-600;
 }
+/* app/blog/[slug]/content.css */
+
