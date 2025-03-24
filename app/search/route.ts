@@ -31,13 +31,12 @@ export async function GET(req: Request) {
   });
 
   // **FlexSearch のインデックス作成**
-  const index = new FlexSearch.Document<Partial<{
-    id: string;
-    title: string;
-    tags: string;
-    description: string;
-    content: string;
-  }>>({});
+  const index = new FlexSearch.Document({
+    document: {
+      id: "slug",  // IDとしてslugを使用
+      index: ["title", "content", "tags"],  // 検索対象フィールドを指定
+    },
+  });
 
   // **記事データをインデックスに追加**
   posts.forEach((post) => {
@@ -53,7 +52,7 @@ export async function GET(req: Request) {
   // **検索処理**
   const searchResults = index.search(query, { enrich: true }) as {
     field: string;
-    result: { id: string }[];
+    result: { id: string }[]; 
   }[];
 
   if (!searchResults || searchResults.length === 0) {

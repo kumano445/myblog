@@ -28,7 +28,7 @@ export async function getServerSideProps(ctx) {
   const posts = getPosts(); 
 
   // FlexSearch インスタンスを作成
-  const index = new FlexSearch.Document({
+  const index = new FlexSearch.Document();({
     tokenize: "full", 
     document: {
       id: "slug",
