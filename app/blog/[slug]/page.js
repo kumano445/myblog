@@ -1,33 +1,44 @@
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 import Image from "next/image";
 import Layout from "@/components/Layout";
 import CommentSection from "@/components/CommentSection";
+import { notFound } from 'next/navigation';
 
 async function fetchPostData(slug) {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/blog/${slug}`);
+    const filePath = path.join(process.cwd(), 'content', `${slug}.md`);
 
-    if (!res.ok) {
+    if (!fs.existsSync(filePath)) {
         return null;
     }
 
-    return res.json();
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const { data, content } = matter(fileContents);
+
+    return {
+        title: data.title,
+        date: data.date,
+        tags: data.tags || [],
+        thumbnail: data.thumbnail || null,
+        contentHtml: content,
+    };
 }
 
 export default async function Page({ params }) {
-    const { slug } = params; // ✅ await を削除して修正
+    if (!params || !params.slug) {
+        return notFound();
+    }
 
-    const post = await fetchPostData(slug); // ✅ fetch を絶対 URL に修正
-    console.log(post); // デバッグ用
-
+    const post = await fetchPostData(params.slug);
     if (!post) {
-        return <p>記事が見つかりませんでした。</p>;
+        return notFound();
     }
 
     return (
         <Layout>
             <div className="mt-10 space-y-16 border-gray-200 pt-10 sm:mt-16 sm:pt-16"></div>
 
-            {/* サムネイル画像 */}
             {post.thumbnail && (
                 <div className="mb-6">
                     <Image
@@ -40,7 +51,6 @@ export default async function Page({ params }) {
                 </div>
             )}
 
-            {/* タグを表示 */}
             {post.tags?.length > 0 ? (
                 <div className="mb-4 flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
@@ -53,16 +63,12 @@ export default async function Page({ params }) {
                 <p className="text-gray-400 text-sm">タグなし</p>
             )}
 
-            {/* 日付 */}
             {post.date && <div className="flex items-center gap-x-4 text-xs mt-3 text-gray-500">{post.date}</div>}
 
-            {/* 記事タイトル */}
             <h1 className="text-3xl font-bold mt-4">{post.title}</h1>
 
-            {/* 記事本文 */}
             <div dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
 
-            {/* コメントセクション */}
             <CommentSection />
 
             <div className="mt-10 space-y-16 border-gray-200 pt-10 sm:mt-16 sm:pt-16"></div>

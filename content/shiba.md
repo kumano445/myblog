@@ -6,6 +6,5 @@ tags: ["Photo"]
 description: "Next.jsから作成"
 
 ---
-
-## Next.jsから作成
-[Website](https://sihba-react-tutorial.vercel.app/)
+<h2>Next.jsから作成</h2>
+<a href="https://sihba-react-tutorial.vercel.app/" target="_blank" rel="noopener noreferrer">Website</a>

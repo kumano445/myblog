@@ -6,8 +6,10 @@ tags: ["Photo"]
 description: "Next.jsから作成"
 ---
 
-## Next.jsから作成
-[Website](https://vue-project-xi-two.vercel.app/)
+<h2>Next.jsから作成</h2>
+<a href="https://vue-project-xi-two.vercel.app/" target="_blank" rel="noopener noreferrer">Website</a>
+
+
 
 
 
