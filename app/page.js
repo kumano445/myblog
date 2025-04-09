@@ -13,7 +13,10 @@ async function getPosts() {
     const fileContents = fs.readFileSync(filePath, 'utf8');
     const { data, content } = matter(fileContents);
 
-    const cleanContent = content.replace(/\n/g, ' ').trim();
+    const cleanContent = content
+  .replace(/<\/?[^>]+(>|$)/g, "") // HTMLタグを削除
+  .replace(/\n/g, ' ')
+  .trim();
 
     return {
       slug: fileName.replace('.md', ''),

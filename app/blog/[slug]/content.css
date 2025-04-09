@@ -32,4 +32,14 @@ a {
   @apply text-indigo-600;
 }
 /* app/blog/[slug]/content.css */
+/* リンク強調スタイル */
+a {
+  color: #2563eb; /* blue-600 */
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #1d4ed8; /* blue-700 */
+}
+
 

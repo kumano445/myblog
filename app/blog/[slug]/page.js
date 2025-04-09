@@ -5,6 +5,7 @@ import Image from "next/image";
 import Layout from "@/components/Layout";
 import CommentSection from "@/components/CommentSection";
 import { notFound } from 'next/navigation';
+import './content.css';
 
 async function fetchPostData(slug) {
     const filePath = path.join(process.cwd(), 'content', `${slug}.md`);
