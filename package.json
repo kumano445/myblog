@@ -10,7 +10,7 @@
     "pagefind:index": "pagefind --source out/"
   },
   "dependencies": {
-    "flexsearch": "^0.8.105",
+    "flexsearch": "github:nextapps-de/flexsearch",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.7",
     "next": "^15.2.5",
@@ -19,7 +19,8 @@
     "react": "^18",
     "react-dom": "^18",
     "remark": "^15.0.1",
-    "remark-html": "^16.0.1"
+    "remark-html": "^16.0.1",
+    "striptags": "^3.2.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",

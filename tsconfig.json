@@ -38,7 +38,7 @@
     "app/tags/[slug]/[page]/page.js",
     "app/lib/types.js",
     "app/lib/constants.js"
-, "app/page/api/blog/[slug]/route.js", "app/blog/[slug]/page.js", "app/lib/getPost.js", "app/lib/posts.js"  ],
+, "app/page/api/blog/[slug]/route.js", "app/blog/[slug]/page.js", "app/lib/getPost.js", "app/lib/posts.js", "app/api/search/route.js", "app/search/page.js"  ],
   "exclude": [
     "node_modules"
   ]

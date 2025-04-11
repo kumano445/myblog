@@ -26,15 +26,15 @@ async function fetchPostData(slug) {
     };
 }
 
-export default async function Page({ params }) {
-    if (!params || !params.slug) {
-        return notFound();
-    }
+export default async function Page(props) {
+    const params = await props.params; // 👈 await を追加
+    const { slug } = params;
 
-    const post = await fetchPostData(params.slug);
+    const post = await fetchPostData(slug);
     if (!post) {
         return notFound();
     }
+
 
     return (
         <Layout>
