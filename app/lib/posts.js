@@ -32,6 +32,7 @@ export function getAllPosts() {
       description: data.description || "",
       date: data.date || "日付不明",
       tags: data.tags || [],
+      thumbnail: data.thumbnail || null, 
     };
   });
 }
